@@ -11,7 +11,8 @@
 .top{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}.brand{display:flex;align-items:center;gap:10px}.logo{width:40px;height:40px;border-radius:13px;background:var(--green);color:#fff;display:grid;place-items:center;font-size:21px}.brand b{font-size:18px}.brand small{display:block;color:var(--muted);font-size:10px;margin-top:2px}.mode{font-size:10px;color:var(--muted);background:#fff;border:1px solid var(--line);padding:7px 10px;border-radius:999px}
 .hero{background:#fff;border-radius:30px;padding:21px 20px 19px;box-shadow:var(--shadow);border:1px solid #edf1ed}.eyebrow{font-size:11px;color:var(--muted);font-weight:800}.tomorrow-date{font-size:28px;font-weight:900;margin-top:4px}.place{font-size:11px;color:var(--muted)}.hero-weather{display:flex;justify-content:space-between;align-items:center;margin-top:15px}.weather-icon{font-size:55px}.temp{font-size:49px;line-height:1;font-weight:900}.weather-name{font-size:14px;font-weight:800;margin-top:5px}.weather-meta{font-size:11px;color:var(--muted);margin-top:4px}.compare{margin-top:15px;background:var(--green2);border-radius:16px;padding:12px 13px}.compare strong{font-size:14px;color:var(--green)}.compare span{display:block;font-size:11px;color:#526158;margin-top:3px}
 .section{margin:19px 2px 9px;display:flex;justify-content:space-between;align-items:end}.section h2{font-size:15px;margin:0}.section small{color:var(--muted);font-size:10px}
-.card{background:#fff;border-radius:var(--r);box-shadow:var(--shadow);border:1px solid #edf1ed;margin-bottom:11px}.gomi-main{padding:20px}.tomorrow-label{font-size:10px;color:var(--green);font-weight:900;letter-spacing:.08em}.gomi-row{display:flex;justify-content:space-between;align-items:center}.gomi-name{font-size:27px;font-weight:900;margin:7px 0 3px}.gomi-sub{font-size:11px;color:var(--muted)}.gomi-icon{font-size:46px}.deadline{display:inline-block;margin-top:13px;background:var(--amber2);color:var(--amber);font-size:11px;font-weight:800;padding:7px 9px;border-radius:999px}.next{margin-top:13px;padding:11px 12px;background:#f7f9f7;border-radius:13px;font-size:11px;color:var(--muted)}.next b{color:var(--text)}.link{margin-top:12px;border:0;background:none;padding:0;color:var(--green);font-weight:800;font-size:12px;cursor:pointer}
+.card{background:#fff;border-radius:var(--r);box-shadow:var(--shadow);border:1px solid #edf1ed;margin-bottom:11px}
+.gomi-main{padding:20px}.tomorrow-label{font-size:10px;color:var(--green);font-weight:900;letter-spacing:.08em}.gomi-row{display:flex;justify-content:space-between;align-items:center}.gomi-name{font-size:27px;font-weight:900;margin:7px 0 3px}.gomi-sub{font-size:11px;color:var(--muted)}.gomi-icon{font-size:46px}.deadline{display:inline-block;margin-top:13px;background:var(--amber2);color:var(--amber);font-size:11px;font-weight:800;padding:7px 9px;border-radius:999px}.next{margin-top:13px;padding:11px 12px;background:#f7f9f7;border-radius:13px;font-size:11px;line-height:1.85;color:var(--muted)}.next b{color:var(--text)}.link{margin-top:12px;border:0;background:none;padding:0;color:var(--green);font-weight:800;font-size:12px;cursor:pointer}
 .today-strip{padding:13px 16px;display:flex;align-items:center;justify-content:space-between;background:#f8faf8}.today-left{display:flex;gap:9px;align-items:center}.today-icon{font-size:22px}.today-title{font-size:11px;color:var(--muted)}.today-name{font-size:13px;font-weight:800}.today-weather{text-align:right}.today-weather b{font-size:16px}.today-weather small{display:block;color:var(--muted);font-size:10px}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:11px}.small{padding:16px}.small .ic{font-size:27px}.small h3{font-size:14px;margin:8px 0 4px}.score{font-size:27px;font-weight:900}.good{color:var(--green)}.mid{color:var(--amber)}.small p{font-size:10px;line-height:1.55;color:var(--muted);margin:4px 0 0}
 .clothes{padding:15px;display:flex;gap:12px;align-items:center}.clothes .ic{font-size:34px}.clothes b{font-size:13px}.clothes p{margin:3px 0 0;color:var(--muted);font-size:10px;line-height:1.5}
@@ -81,11 +82,61 @@ function nth(d){return Math.floor((d.getDate()-1)/7)+1};
 function collect(d,r){if(r.days?.includes(d.getDay()))return true;if(r.nth&&d.getDay()===r.nth[0]&&nth(d)===r.nth[1])return true;if(r.nthList&&d.getDay()===r.nthList[0]&&r.nthList.slice(1).includes(nth(d)))return true;return false}
 function collections(d){return rules.filter(r=>collect(d,r))}
 function nextAll(d){for(let i=1;i<50;i++){let x=new Date(d);x.setDate(x.getDate()+i);let c=collections(x);if(c.length)return{x, c}}}
-function gomiUI(){let today=new Date(),tom=new Date(today);tom.setDate(tom.getDate()+1);let tc=collections(today),mc=collections(tom),next=nextAll(tom);document.getElementById("todayGomi").textContent=tc.length?tc.map(x=>x.name).join("・"):"収集なし";document.getElementById("todayGomiIcon").textContent=tc[0]?.icon||"—";document.getElementById("tomorrowGomi").textContent=mc.length?mc.map(x=>x.name).join("・"):"収集なし";document.getElementById("tomorrowGomiIcon").textContent=mc[0]?.icon||"🌿";document.getElementById("tomorrowGomiSub").textContent=mc.length?"明日の収集品目":"明日はごみ収集なし";if(mc.length){document.getElementById("nextGomi").innerHTML=`出し忘れたら、次回は <b>${fmt(next.x)}</b>（${next.c.map(x=>x.name).join("・")}）`;}else document.getElementById("nextGomi").innerHTML=`次に出せるごみは <b>${fmt(next.x)}</b>（${next.c.map(x=>x.name).join("・")}）`;}
-function advice(t,h){if(t>=30||h>=85)return["🧢","暑さ対策＋通気性のよい服","半袖・薄手の服。帽子と水分も意識。"];if(t>=25)return["👕","半袖＋薄手の羽織り","昼は暑くなりそう。朝夕は羽織りがあると安心。"];if(t>=20)return["🧥","長袖・薄手の羽織り","朝夕の気温差に対応できる服装がおすすめ。"];return["🧣","長袖＋上着","冷えやすい時間帯は重ね着を。"];}
-function play(code,t,rain){if([61,63,65,80,81,82,95,96,99].includes(code)||rain>=2)return["△","雨の可能性あり。午前など雨の少ない時間帯を狙って。","mid"];if(t>=32||t<8)return["△","気温が厳しめ。時間帯と体調を見て。","mid"];if(t>=15&&t<=30)return["◎","外遊びしやすい天気です。","good"];return["○","外遊びは可能。服装を調整して。","good"];}
-function comparison(todayMax,tomMax,todayMin,tomMin,todayHum,tomHum,todayRain,tomRain){let diff=Math.round(tomMax-todayMax),word=diff>0?`${diff}℃高い`:diff<0?`${Math.abs(diff)}℃低い`:"ほぼ同じ";let temp=`最高気温は今日より <b>${word}</b>`;let humid=tomHum-todayHum,rain=tomRain-todayRain;let sub=humid>=10?"明日は今日より蒸しやすそう。":humid<=-10?"明日は今日よりカラッとしそう。":rain>=30?"明日は雨の可能性が高くなっています。":"気温・湿度は今日と大きく変わりません。";document.getElementById("compareMain").innerHTML=temp;document.getElementById("compareSub").textContent=sub;}
-async function load(){const url=`https://api.open-meteo.com/v1/forecast?latitude=${LAT}&longitude=${LON}&timezone=Asia%2FTokyo&forecast_days=7&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max,precipitation_sum&hourly=temperature_2m,relative_humidity_2m,weather_code,precipitation`;try{const d=await (await fetch(url)).json();let today=new Date(d.daily.time[0]+"T12:00:00"),tom=new Date(d.daily.time[1]+"T12:00:00");let c0=d.daily.weather_code[0],c1=d.daily.weather_code[1],t0=Math.round(d.daily.temperature_2m_max[0]),t1=Math.round(d.daily.temperature_2m_max[1]);document.getElementById("tomorrowDate").textContent=fmt(tom);document.getElementById("tomorrowTemp").textContent=t1+"°";document.getElementById("tomorrowWeather").textContent=wt[c1]||"天気";document.getElementById("tomorrowIcon").textContent=wi[c1]||"🌤️";document.getElementById("tomorrowMeta").textContent=`最低 ${Math.round(d.daily.temperature_2m_min[1])}°　降水 ${d.daily.precipitation_probability_max[1]??"—"}%`;document.getElementById("todayTemp").textContent=t0+"°";document.getElementById("todayWeather").textContent=wt[c0]||"天気";let idx0=d.hourly.time.findIndex(x=>x.startsWith(d.daily.time[0])&&x.includes("T12:00")),idx1=d.hourly.time.findIndex(x=>x.startsWith(d.daily.time[1])&&x.includes("T12:00"));let h0=idx0>=0?d.hourly.relative_humidity_2m[idx0]:70,h1=idx1>=0?d.hourly.relative_humidity_2m[idx1]:70;comparison(t0,t1,Math.round(d.daily.temperature_2m_min[0]),Math.round(d.daily.temperature_2m_min[1]),h0,h1,d.daily.precipitation_probability_max[0]||0,d.daily.precipitation_probability_max[1]||0);document.getElementById("humidity").textContent=Math.round(h1)+"%";let cl=advice((idx1>=0?d.hourly.temperature_2m[idx1]:t1),h1);document.getElementById("clothesIcon").textContent=cl[0];document.getElementById("clothesTitle").textContent=cl[1];document.getElementById("clothesText").textContent=cl[2];let pa=play(c1,t1,d.daily.precipitation_sum[1]||0);document.getElementById("playScore").textContent=pa[0];document.getElementById("playScore").className="score "+pa[2];document.getElementById("playText").textContent=pa[1];let box=document.getElementById("forecast");box.innerHTML="";for(let i=0;i<7;i++){let x=new Date(d.daily.time[i]+"T12:00:00"),cc=collections(x);box.insertAdjacentHTML("beforeend",`<div class="day"><strong>${i===0?"今日":i===1?"明日":fmt(x).slice(0,-3)}</strong><div class="wi">${wi[d.daily.weather_code[i]]||"🌤️"}</div><div class="tt">${Math.round(d.daily.temperature_2m_max[i])}° / ${Math.round(d.daily.temperature_2m_min[i])}°</div><div class="gg">${cc.length?cc.map(r=>r.name.replace("プラマーク容器包装","プラ")).join("・"):"—"}</div></div>`);}}catch(e){document.getElementById("compareMain").textContent="天気を取得できませんでした";document.getElementById("compareSub").textContent="ネット接続を確認してください。";}}
+function nextSame(d,r){for(let i=1;i<50;i++){let x=new Date(d);x.setDate(x.getDate()+i);if(collect(x,r))return x}}
+function gomiUI(){
+ let today=new Date(),tom=new Date(today);tom.setDate(tom.getDate()+1);
+ let tc=collections(today),mc=collections(tom),next=nextAll(tom);
+ document.getElementById("todayGomi").textContent=tc.length?tc.map(x=>x.name).join("・"):"収集なし";
+ document.getElementById("todayGomiIcon").textContent=tc[0]?.icon||"—";
+ document.getElementById("tomorrowGomi").textContent=mc.length?mc.map(x=>x.name).join("・"):"収集なし";
+ document.getElementById("tomorrowGomiIcon").textContent=mc[0]?.icon||"🌿";
+ document.getElementById("tomorrowGomiSub").textContent=mc.length?"明日の収集品目":"明日はごみ収集なし";
+ if(mc.length){document.getElementById("nextGomi").innerHTML=`出し忘れたときの次回<br>`+mc.map(r=>`${r.icon} ${r.name} → <b>${fmt(nextSame(tom,r))}</b>`).join("<br>");}
+ else document.getElementById("nextGomi").innerHTML=`次に出せるごみは <b>${fmt(next.x)}</b>（${next.c.map(x=>x.name).join("・")}）`;
+}
+function advice(t,h){
+ if(t>=30||h>=85)return["🧢","暑さ対策＋通気性のよい服","半袖・薄手の服。帽子と水分も意識。"];
+ if(t>=25)return["👕","半袖＋薄手の羽織り","昼は暑くなりそう。朝夕は羽織りがあると安心。"];
+ if(t>=20)return["🧥","長袖・薄手の羽織り","朝夕の気温差に対応できる服装がおすすめ。"];
+ return["🧣","長袖＋上着","冷えやすい時間帯は重ね着を。"];
+}
+function play(code,t,rain){
+ if([61,63,65,80,81,82,95,96,99].includes(code)||rain>=2)return["△","雨の可能性あり。午前など雨の少ない時間帯を狙って。","mid"];
+ if(t>=32||t<8)return["△","気温が厳しめ。時間帯と体調を見て。","mid"];
+ if(t>=15&&t<=30)return["◎","外遊びしやすい天気です。","good"];
+ return["○","外遊びは可能。服装を調整して。","good"];
+}
+function comparison(todayMax,tomMax,todayMin,tomMin,todayHum,tomHum,todayRain,tomRain){
+ let diff=Math.round(tomMax-todayMax), word=diff>0?`${diff}℃高い`:diff<0?`${Math.abs(diff)}℃低い`:"ほぼ同じ";
+ let temp=`最高気温は今日より <b>${word}</b>`;
+ let humid=tomHum-todayHum, rain=tomRain-todayRain;
+ let sub=humid>=10?"明日は今日より蒸しやすそう。":humid<=-10?"明日は今日よりカラッとしそう。":rain>=30?"明日は雨の可能性が高くなっています。":"気温・湿度は今日と大きく変わりません。";
+ document.getElementById("compareMain").innerHTML=temp;document.getElementById("compareSub").textContent=sub;
+}
+async function load(){
+ const url=`https://api.open-meteo.com/v1/forecast?latitude=${LAT}&longitude=${LON}&timezone=Asia%2FTokyo&forecast_days=7&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max,precipitation_sum&hourly=temperature_2m,relative_humidity_2m,weather_code,precipitation`;
+ try{
+  const d=await (await fetch(url)).json();
+  let today=new Date(d.daily.time[0]+"T12:00:00"),tom=new Date(d.daily.time[1]+"T12:00:00");
+  let c0=d.daily.weather_code[0],c1=d.daily.weather_code[1],t0=Math.round(d.daily.temperature_2m_max[0]),t1=Math.round(d.daily.temperature_2m_max[1]);
+  document.getElementById("tomorrowDate").textContent=fmt(tom);
+  document.getElementById("tomorrowTemp").textContent=t1+"°";
+  document.getElementById("tomorrowWeather").textContent=wt[c1]||"天気";
+  document.getElementById("tomorrowIcon").textContent=wi[c1]||"🌤️";
+  document.getElementById("tomorrowMeta").textContent=`最低 ${Math.round(d.daily.temperature_2m_min[1])}°　降水 ${d.daily.precipitation_probability_max[1]??"—"}%`;
+  document.getElementById("todayTemp").textContent=t0+"°";document.getElementById("todayWeather").textContent=wt[c0]||"天気";
+  // noon hourly comparison
+  let idx0=d.hourly.time.findIndex(x=>x.startsWith(d.daily.time[0])&&x.includes("T12:00")),idx1=d.hourly.time.findIndex(x=>x.startsWith(d.daily.time[1])&&x.includes("T12:00"));
+  let h0=idx0>=0?d.hourly.relative_humidity_2m[idx0]:70,h1=idx1>=0?d.hourly.relative_humidity_2m[idx1]:70;
+  comparison(t0,t1,Math.round(d.daily.temperature_2m_min[0]),Math.round(d.daily.temperature_2m_min[1]),h0,h1,d.daily.precipitation_probability_max[0]||0,d.daily.precipitation_probability_max[1]||0);
+  document.getElementById("humidity").textContent=Math.round(h1)+"%";
+  let cl=advice((idx1>=0?d.hourly.temperature_2m[idx1]:t1),h1);
+  document.getElementById("clothesIcon").textContent=cl[0];document.getElementById("clothesTitle").textContent=cl[1];document.getElementById("clothesText").textContent=cl[2];
+  let pa=play(c1,t1,d.daily.precipitation_sum[1]||0);document.getElementById("playScore").textContent=pa[0];document.getElementById("playScore").className="score "+pa[2];document.getElementById("playText").textContent=pa[1];
+  let box=document.getElementById("forecast");box.innerHTML="";
+  for(let i=0;i<7;i++){let x=new Date(d.daily.time[i]+"T12:00:00"),cc=collections(x);box.insertAdjacentHTML("beforeend",`<div class="day"><strong>${i===0?"今日":i===1?"明日":fmt(x).slice(0,-3)}</strong><div class="wi">${wi[d.daily.weather_code[i]]||"🌤️"}</div><div class="tt">${Math.round(d.daily.temperature_2m_max[i])}° / ${Math.round(d.daily.temperature_2m_min[i])}°</div><div class="gg">${cc.length?cc.map(r=>r.name.replace("プラマーク容器包装","プラ")).join("・"):"—"}</div></div>`)}
+ }catch(e){document.getElementById("compareMain").textContent="天気を取得できませんでした";document.getElementById("compareSub").textContent="ネット接続を確認してください。";}
+}
 function searchWaste(){let q=document.getElementById("search").value.toLowerCase(),a=examples.filter(x=>!q||x[0].toLowerCase().includes(q)||x[1].toLowerCase().includes(q));document.getElementById("wasteList").innerHTML=a.map(x=>`<div class="item"><div><b>${x[0]}</b><small>代表的な分別例</small></div><b>${x[1]}</b></div>`).join("")||"<p style='font-size:12px;color:#738078'>該当する代表例がありません。</p>"}
 function openWaste(){document.getElementById("modal").classList.add("open");document.getElementById("search").value="";searchWaste()}
 function closeWaste(){document.getElementById("modal").classList.remove("open")}
